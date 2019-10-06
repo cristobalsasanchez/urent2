@@ -1,7 +1,7 @@
 package com.proyecto.urent.Controller;
 
-import com.proyecto.urent.Model.Entity.Arrendador;
-import com.proyecto.urent.Model.Service.IArrendadorService;
+import com.proyecto.urent.Model.Entity.Distancia;
+import com.proyecto.urent.Model.Service.IDistanciaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -18,44 +18,45 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
 @RequestMapping("/api")
-public class ArrendadorController {
-    @Autowired
-    private IArrendadorService arrendadorService;
+public class DistanciaController {
 
-    @GetMapping("/arrendador")
-    public List<Arrendador> index(){
-        return arrendadorService.findAll();
+    @Autowired
+    private IDistanciaService distanciaService;
+
+    @GetMapping("/distancia")
+    public List<Distancia> index(){
+        return distanciaService.findAll();
     }
 
-    @GetMapping("/arrendador/{id}")
+    @GetMapping("/distancia/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> show(@PathVariable Integer id){
 
-        Arrendador arrendador = null;
+        Distancia distancia = null;
         Map<String, Object> response = new HashMap<>();
 
         try{
-            arrendador = arrendadorService.findById(id);
+            distancia = distanciaService.findById(id);
         }catch(DataAccessException e) {
             response.put("mensaje", "Error al realizar la consulta en la base de datos");
             response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        if(arrendador == null){
-            response.put("mensaje", "El arrendador ID: ".concat(id.toString().concat(" no existe en la base de datos!")));
+        if(distancia == null){
+            response.put("mensaje", "La distancia ID: ".concat(id.toString().concat(" no existe en la base de datos!")));
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<Arrendador>(arrendador, HttpStatus.OK);
+        return new ResponseEntity<Distancia>(distancia, HttpStatus.OK);
     }
     @ResponseStatus(HttpStatus.OK)
 
 
-    @PostMapping("/arrendador")
-    public ResponseEntity<?> create(@Valid @RequestBody Arrendador arrendador, BindingResult result) {
+    @PostMapping("/distancia")
+    public ResponseEntity<?> create(@Valid @RequestBody Distancia distancia, BindingResult result) {
 
-        Arrendador arrendador1 = null;
+        Distancia distancia1 = null;
         Map<String , Object> response = new HashMap<>();
 
         if(result.hasErrors()){
@@ -70,24 +71,24 @@ public class ArrendadorController {
         }
 
         try{
-            arrendador1 = arrendadorService.save(arrendador);
+            distancia1 = distanciaService.save(distancia);
         }catch(DataAccessException e){
             response.put("mensaje", "Error al realizar el insert en la base de datos");
             response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity <Map<String , Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        response.put("mensaje", "El arrendador ha sido creado con exito!");
-        response.put("arrendador", arrendador1);
+        response.put("mensaje", "La distancia ha sido creado con exito!");
+        response.put("distancia", distancia1);
         return new ResponseEntity<Map<String,Object>>(response, HttpStatus.CREATED);
     }
 
-    @PutMapping("/arrendador/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody Arrendador arrendador, BindingResult result, @PathVariable Integer id){
+    @PutMapping("/distancia/{id}")
+    public ResponseEntity<?> update(@Valid @RequestBody Distancia distancia, BindingResult result, @PathVariable Integer id){
 
-        Arrendador arrendadorActual = arrendadorService.findById(id);
+        Distancia distanciaActual = distanciaService.findById(id);
 
-        Arrendador arrendadorUpdate = null;
+        Distancia distanciaUpdate = null;
 
         Map<String, Object> response = new HashMap<>();
 
@@ -102,45 +103,44 @@ public class ArrendadorController {
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
         }
 
-        if(arrendadorActual == null){
-            response.put("mensaje", "El arrendador ID: ".concat(id.toString().concat(" no existe en la base de datos!")));
+        if(distanciaActual == null){
+            response.put("mensaje", "La distancia ID: ".concat(id.toString().concat(" no existe en la base de datos!")));
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
 
         try{
-            arrendadorActual.setRutArrendador(arrendador.getRutArrendador());
-            arrendadorActual.setCorreo(arrendador.getCorreo());
-            arrendadorActual.setCalificacion(arrendador.getCalificacion());
-            arrendadorActual.setTelefono(arrendador.getTelefono());
-            arrendadorActual.setNombre(arrendador.getNombre());
-            arrendadorActual.setEstado(arrendador.getEstado());
+            distanciaActual.setEstado(distancia.getEstado());
+            distanciaActual.setIdInmueble(distancia.getIdInmueble());
+            distanciaActual.setIdSede(distancia.getIdSede());
+            distanciaActual.setKilometros(distancia.getKilometros());
 
-            arrendadorUpdate = arrendadorService.save(arrendadorActual);
+            distanciaUpdate = distanciaService.save(distanciaActual);
         }catch(DataAccessException e) {
-            response.put("mensaje", "Error al actualizar el arrendador en la base de datos");
+            response.put("mensaje", "Error al actualizar la distancia en la base de datos");
             response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        response.put("mensaje", "El arrendador ha sido actualizado con exito!");
-        response.put("arrendador", arrendadorUpdate);
+        response.put("mensaje", "La distancia ha sido actualizado con exito!");
+        response.put("distancia", distanciaUpdate);
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/arrendador/{id}")
+    @DeleteMapping("/distancia/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id){
         Map<String, Object> response = new HashMap<>();
 
         try{
-            arrendadorService.delete(id);
+            distanciaService.delete(id);
         }catch(DataAccessException e){
-            response.put("mensaje", "Error al eliminar el arrendador en la base de datos");
+            response.put("mensaje", "Error al eliminar la distancia en la base de datos");
             response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        response.put("mensaje", "El arrendador fue eliminado con exito!");
+        response.put("mensaje", "La distancia fue eliminada con exito!");
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
+
 }

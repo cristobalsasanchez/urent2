@@ -2,12 +2,11 @@ package com.proyecto.urent.Model.Entity;
 
 import javax.persistence.*;
 
-
 @Entity
-@Table(name = "arrendador")
-public class Arrendador {
-    private Integer idArrendador;
-    private String rutArrendador;
+@Table(name = "arrendatario")
+public class Arrendatario {
+    private Integer idArrendatario;
+    private String rutArrendatario;
     private String nombre;
     private String telefono;
     private String correo;
@@ -16,24 +15,23 @@ public class Arrendador {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    public Integer getIdArrendador() {
-        return idArrendador;
+    public Integer getIdArrendatario() {
+        return idArrendatario;
     }
 
-    public void setIdArrendador(Integer idArrendador) {
-        this.idArrendador = idArrendador;
+    public void setIdArrendatario(Integer idArrendatario) {
+        this.idArrendatario = idArrendatario;
     }
 
 
-    @Column(name="rutArrendador")
-    public String getRutArrendador() {
-        return rutArrendador;
+    @Column(name="rutArrendatario")
+    public String getRutArrendatario() {
+        return rutArrendatario;
     }
 
-    public void setRutArrendador(String rutArrendador) {
-        this.rutArrendador = rutArrendador;
+    public void setRutArrendatario(String rutArrendatario) {
+        this.rutArrendatario = rutArrendatario;
     }
-
 
     @Column(name="nombre")
     public String getNombre() {
@@ -79,6 +77,4 @@ public class Arrendador {
     public void setEstado(Integer estado) {
         this.estado = estado;
     }
-
-
 }

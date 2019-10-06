@@ -6,21 +6,21 @@ import javax.persistence.*;
 @Entity
 @Table(name = "universidad")
 public class Universidad {
-
-    private Integer id;
+    private Integer idUniversidad;
     private String nombre;
     private Integer estado;
 
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    public Integer getId() {
-        return id;
+    public Integer getIdUniversidad() {
+        return idUniversidad;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdUniversidad(Integer idUniversidad) {
+        this.idUniversidad = idUniversidad;
     }
+
 
     @Column(name="nombre")
     public String getNombre() {

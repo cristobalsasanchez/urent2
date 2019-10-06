@@ -1,7 +1,7 @@
 package com.proyecto.urent.Controller;
 
-import com.proyecto.urent.Model.Entity.Arrendador;
-import com.proyecto.urent.Model.Service.IArrendadorService;
+import com.proyecto.urent.Model.Entity.Inmueble;
+import com.proyecto.urent.Model.Service.IInmuebleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -18,44 +18,44 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
 @RequestMapping("/api")
-public class ArrendadorController {
+public class InmuebleController {
     @Autowired
-    private IArrendadorService arrendadorService;
+    private IInmuebleService inmuebleService;
 
-    @GetMapping("/arrendador")
-    public List<Arrendador> index(){
-        return arrendadorService.findAll();
+    @GetMapping("/inmueble")
+    public List<Inmueble> index(){
+        return inmuebleService.findAll();
     }
 
-    @GetMapping("/arrendador/{id}")
+    @GetMapping("/inmueble/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> show(@PathVariable Integer id){
 
-        Arrendador arrendador = null;
+        Inmueble inmueble = null;
         Map<String, Object> response = new HashMap<>();
 
         try{
-            arrendador = arrendadorService.findById(id);
+            inmueble = inmuebleService.findById(id);
         }catch(DataAccessException e) {
             response.put("mensaje", "Error al realizar la consulta en la base de datos");
             response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        if(arrendador == null){
-            response.put("mensaje", "El arrendador ID: ".concat(id.toString().concat(" no existe en la base de datos!")));
+        if(inmueble == null){
+            response.put("mensaje", "El inmueble ID: ".concat(id.toString().concat(" no existe en la base de datos!")));
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<Arrendador>(arrendador, HttpStatus.OK);
+        return new ResponseEntity<Inmueble>(inmueble, HttpStatus.OK);
     }
     @ResponseStatus(HttpStatus.OK)
 
 
-    @PostMapping("/arrendador")
-    public ResponseEntity<?> create(@Valid @RequestBody Arrendador arrendador, BindingResult result) {
+    @PostMapping("/inmueble")
+    public ResponseEntity<?> create(@Valid @RequestBody Inmueble inmueble, BindingResult result) {
 
-        Arrendador arrendador1 = null;
+        Inmueble inmueble1 = null;
         Map<String , Object> response = new HashMap<>();
 
         if(result.hasErrors()){
@@ -70,24 +70,24 @@ public class ArrendadorController {
         }
 
         try{
-            arrendador1 = arrendadorService.save(arrendador);
+            inmueble1 = inmuebleService.save(inmueble);
         }catch(DataAccessException e){
             response.put("mensaje", "Error al realizar el insert en la base de datos");
             response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity <Map<String , Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        response.put("mensaje", "El arrendador ha sido creado con exito!");
-        response.put("arrendador", arrendador1);
+        response.put("mensaje", "El inmueble ha sido creado con exito!");
+        response.put("inmueble", inmueble1);
         return new ResponseEntity<Map<String,Object>>(response, HttpStatus.CREATED);
     }
 
-    @PutMapping("/arrendador/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody Arrendador arrendador, BindingResult result, @PathVariable Integer id){
+    @PutMapping("/inmueble/{id}")
+    public ResponseEntity<?> update(@Valid @RequestBody Inmueble inmueble, BindingResult result, @PathVariable Integer id){
 
-        Arrendador arrendadorActual = arrendadorService.findById(id);
+        Inmueble inmuebleActual = inmuebleService.findById(id);
 
-        Arrendador arrendadorUpdate = null;
+        Inmueble inmuebleUpdate = null;
 
         Map<String, Object> response = new HashMap<>();
 
@@ -102,45 +102,54 @@ public class ArrendadorController {
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
         }
 
-        if(arrendadorActual == null){
-            response.put("mensaje", "El arrendador ID: ".concat(id.toString().concat(" no existe en la base de datos!")));
+        if(inmuebleActual == null){
+            response.put("mensaje", "El inmueble ID: ".concat(id.toString().concat(" no existe en la base de datos!")));
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
         }
 
         try{
-            arrendadorActual.setRutArrendador(arrendador.getRutArrendador());
-            arrendadorActual.setCorreo(arrendador.getCorreo());
-            arrendadorActual.setCalificacion(arrendador.getCalificacion());
-            arrendadorActual.setTelefono(arrendador.getTelefono());
-            arrendadorActual.setNombre(arrendador.getNombre());
-            arrendadorActual.setEstado(arrendador.getEstado());
+            inmuebleActual.setAgua(inmueble.getAgua());
+            inmuebleActual.setCocina(inmueble.getCocina());
+            inmuebleActual.setEstado(inmueble.getEstado());
+            inmuebleActual.setDescripcion(inmueble.getDescripcion());
+            inmuebleActual.setDireccion(inmueble.getDireccion());
+            inmuebleActual.setDisponibilidad(inmueble.getDisponibilidad());
+            inmuebleActual.setEstacionamiento(inmueble.getEstacionamiento());
+            inmuebleActual.setIdPropiedad(inmueble.getIdPropiedad());
+            inmuebleActual.setGas(inmueble.getGas());
+            inmuebleActual.setLuz(inmueble.getLuz());
+            inmuebleActual.setWifi(inmueble.getWifi());
+            inmuebleActual.setNroBanos(inmueble.getNroBanos());
+            inmuebleActual.setNroHabitaciones(inmueble.getNroHabitaciones());
+            inmuebleActual.setPrecioMensual(inmueble.getPrecioMensual());
 
-            arrendadorUpdate = arrendadorService.save(arrendadorActual);
+            inmuebleUpdate = inmuebleService.save(inmuebleActual);
         }catch(DataAccessException e) {
-            response.put("mensaje", "Error al actualizar el arrendador en la base de datos");
+            response.put("mensaje", "Error al actualizar el inmueble en la base de datos");
             response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        response.put("mensaje", "El arrendador ha sido actualizado con exito!");
-        response.put("arrendador", arrendadorUpdate);
+        response.put("mensaje", "El inmueble ha sido actualizado con exito!");
+        response.put("inmueble", inmuebleUpdate);
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/arrendador/{id}")
+    @DeleteMapping("/inmueble/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id){
         Map<String, Object> response = new HashMap<>();
 
         try{
-            arrendadorService.delete(id);
+            inmuebleService.delete(id);
         }catch(DataAccessException e){
-            response.put("mensaje", "Error al eliminar el arrendador en la base de datos");
+            response.put("mensaje", "Error al eliminar el inmueble en la base de datos");
             response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        response.put("mensaje", "El arrendador fue eliminado con exito!");
+        response.put("mensaje", "El inmueble fue eliminada con exito!");
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
+
 }
