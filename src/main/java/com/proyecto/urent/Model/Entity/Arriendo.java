@@ -19,7 +19,7 @@ public class Arriendo {
     private Integer estado;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    //@GeneratedValue(strategy= GenerationType.IDENTITY)
     public Integer getIdArriendo() {
         return idArriendo;
     }

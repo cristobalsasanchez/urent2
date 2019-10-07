@@ -14,7 +14,7 @@ public class Arrendatario {
     private Integer estado;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    //@GeneratedValue(strategy= GenerationType.IDENTITY)
     public Integer getIdArrendatario() {
         return idArrendatario;
     }
