@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="U-rent">
+		<class>com.urent.springboot.web.app.model.Arrendador</class>
+		<class>com.urent.springboot.web.app.model.Arrendatario</class>
+		<class>com.urent.springboot.web.app.model.Arriendo</class>
+		<class>com.urent.springboot.web.app.model.Distancia</class>
+		<class>com.urent.springboot.web.app.model.Inmueble</class>
+		<class>com.urent.springboot.web.app.model.Propiedad</class>
+		<class>com.urent.springboot.web.app.model.Sede</class>
+		<class>com.urent.springboot.web.app.model.Universidad</class>
+	</persistence-unit>
+</persistence>
